@@ -81,7 +81,7 @@
 			   'txtstate': {required: true},
 			   'txtPhone': {
 				   		required: true, 
-						minlength:9,
+						minlength:10,
 						maxlength:10,
 						number: true
 			   },
@@ -107,7 +107,7 @@
 			   },
 			   'phone': {
 						required: true, 
-						minlength:9,
+						minlength:10,
 						maxlength:10,
 						number: true
 			   },
@@ -126,7 +126,7 @@
 					 },
                     'user_phone': { 
 						required: true, 
-						minlength:9,
+						minlength:10,
 						maxlength:10,
 						number: true
 					},

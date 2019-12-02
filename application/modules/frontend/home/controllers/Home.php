@@ -35,7 +35,7 @@ class Home extends CI_Controller {
 		if(!empty($post)){
 		   $isnerted = $this->App_home_model->insertNewsLetter($post);
 		   if($isnerted){
-			   redirect("home");
+			   redirect("contact/thankyou");
 		   } 
 		}
 	}
