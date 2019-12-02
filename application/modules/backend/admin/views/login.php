@@ -73,7 +73,7 @@
         </div>-->
         <div class="col-xs-12">
 		<button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
-        </div>
+        </div>		  <div class="col-xs-12">		 <a href="<?php echo base_url('admin/forgot_pass');?>">Forget Password </a>        </div>
       </div>
     </form>
   </div>
