@@ -11,21 +11,21 @@
 								<ul>
                                     <li><a href="#">WPC Doors and Window Frames</a></li>
 									<?php foreach ($categories as $category) { ?>
-									<?php //  pr($category);// if($category['products']){ echo "list" ; } ?>
-											<?php if($category->title=='Empty'){  ?>
-											 <?php foreach ($category->subs as $sub)  { ?>
-											 <li><a href="<?php echo base_url('product/').$sub->product_slug; ?>"><?php echo $sub->product_title; ?> </a></li> 
-											 <?php } ?>
+									<?php // pr($category);  // if($category['products']){ echo "list" ; } ?>
+											<?php if($category->title=='Empty' || $category->title=='No Parent'){  ?>
+												 <?php foreach ($category->subs as $subb)  { ?>
+												 <li><a href="<?php echo base_url('product/').$subb->product_slug; ?>"><?php echo $subb->product_title; ?> </a></li> 
+												 <?php } ?>
 											<?php }else{ ?>
-											<li><a href="#"><?php echo $category->title; ?> </a>
-											<?php if(!empty($category->subs)) { ?>
+												<li><a href="#"><?php echo $category->title; $total_items = count($category->subs); ?></a>
 													<ul>
-													<?php foreach ($category->subs as $sub)  { ?>
-													 <li><a href="<?php echo base_url('product/').$sub->product_slug; ?>"><?php echo $sub->product_title; ?> </a></li>
-													<?php } ?>	
+													<?php for ($i = 0; $i < $total_items; $i++){ ?>
+													 
+													<a href="<?php echo base_url('product/').$category->subs[$i]->product_slug; ?>"><?php echo $category->subs[$i]->product_title; ?> </a>
+													</li> 
+													<?php } ?> 
 													</ul>
-											<?php } ?>
-											</li>
+												</li>
 											<?php } ?>
 										<?php } ?>
 								</ul>
@@ -65,16 +65,16 @@
 
                     <div class="tab-section text-primary"> 
                        <ul class="list-unstyled tab-link">
-							<?php if(!empty($show_product['0']['product_overview'])){ ?>
+							<?php if(!empty(trim($show_product['0']['product_overview']))){ ?>
 								<li class="active" data-tab="tb-one">OVERVIEW </li>
 							<?php } ?>
-                            <?php if(!empty($show_product['0']['product_production'])){ ?>
+                            <?php if(!empty(trim($show_product['0']['product_production']))){ ?>
                                 <li data-tab="tb-two">Production method </li>
                             <?php } ?>
-							<?php if(!empty($show_product['0']['product_gallery'])){ ?>
+							<?php if(!empty(trim($show_product['0']['product_specification']))){ ?>
 								<li data-tab="tb-three">Technical information</li>
 							<?php } ?>
-							<?php if(!empty($show_product['0']['product_gallery'])){ ?>
+							<?php if(!empty(trim($show_product['0']['product_gallery']))){ ?>
 								<li data-tab="tb-four">gallery</li>
 							<?php } ?>
                         </ul>

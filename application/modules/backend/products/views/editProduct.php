@@ -46,7 +46,6 @@
 					<div class="form-group">
 						<label for=""><?php echo lang('pro_list');?>*</label>
 						<select name="parent_id" id="parent_id" class="form-control">
-							<option value="12">NO parent</option>
 							<?php foreach($all_products as $row) :?>
 							<option value="<?php echo $row->id; ?>" <?php if($row->id == $updated->parent_id ){ echo "selected"; } ?>><?php echo $row->title;?></option>
 						<?php endforeach; ?>
@@ -124,6 +123,26 @@
 					<?php else : ?>
 						<img src="<?php echo base_url();?>/images/noimage.jpg" />
 					<?php endif;?>	
+
+					<div class="form-group">
+					  <label for=""><?php echo lang('multiple');?></label>
+					  <input name="multiple_files[]" type="file" id="multiple_files" value="<?php echo $updated->multiple_files; ?>" multiple />
+					   <input type="hidden" name="old" value="<?php echo $updated->multiple_files; ?>">
+					</div>
+					<div class="form-group">
+						<?php if(!empty($updated)): ?>
+							<?php  $images = $updated->multiple_files;
+							// print_r($images); die();
+	                             $img =explode(',', $images); ?>
+	                        <?php  foreach($img as $image) : ?>
+								<img src="<?php echo PRODUCT_IMG_PATH.'document/'.$image;?>" id="image<?php echo $image; ?>" style="width:100px;"> 
+								 
+						<?php endforeach ; ?>
+						
+						<?php else : ?>
+							<img src="<?php echo base_url();?>/images/noimage.jpg" />
+						<?php endif;?>
+					</div>
 					 
 					<div class="form-group">
 					  <label for=""><?php echo lang('pro_meta_title');?>*</label>
@@ -142,7 +161,7 @@
               <!-- /.box-body -->
               <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
-				<a href="<?php echo base_url('cms');?>" class="btn btn-danger">Cancel</a>
+				<a href="<?php echo base_url('products');?>" class="btn btn-danger">Cancel</a>
               </div>
             </form>
           </div>

@@ -29,12 +29,14 @@
             <!-- /.box-header -->
             <!-- form start -->
 			<?= validation_errors(); ?>
+			
             <?php $attributes = array('id' => 'frm_subadmin', 'name'=>'frm_subadmin');
 			echo form_open_multipart('products/addProducts', $attributes); ?>
 				<div class="box-body">
 					<div class="form-group">
-					  <label for=""><?php echo lang('pro_tagline');?>*</label>
+					<label for=""><?php echo lang('pro_tagline');?>*</label>
 					  <input type="text" class="form-control" id="pro_tagline" name="product_tagline" placeholder="Product Tagline" value="<?php echo set_value('product_tagline'); ?>">
+
 					</div>
 					<div class="form-group">
 					  <label for=""><?php echo lang('pro_title');?>*</label>
@@ -47,7 +49,6 @@
 					<div class="form-group">
 						<label for=""><?php echo lang('pro_list');?>*</label>
 						<select name="parent_id" id="parent_id" class="form-control">
-							<option value="12">NO Parent</option>
 							<?php foreach($all_products as $row) :?>
 							<option value="<?php echo $row->id; ?>"><?php echo $row->title;?></option>
 						<?php endforeach; ?>
@@ -83,12 +84,67 @@
 					  <input name="product_image" type="file" id="product_image" multiple />
 					</div>
 					<div class="form-group">
-					  <label for=""><?php echo lang('pro_image_gallery');?></label>
-					  <input name="product_gallery" type="file" id="product_gallery" multiple />
+					  <div class="col-xs-12">
+						<div class="col-md-12" >
+							<h3> Gallery Upload </h3>
+							<div id="field">
+								<div id="field0">
+									<!-- Text input-->
+									<div class="form-group">
+									  <label class="col-md-4 control-label" for="action_name">Image Text</label>  
+									  <div class="col-md-5">
+									  <input id="action_name" name="gallery_text[]" type="text" placeholder="" class="form-control input-md">
+									  </div>
+									</div>
+									<br><br>
+									<!-- File Button --> 
+									<div class="form-group">
+									  <label class="col-md-4 control-label" for="action_json"> Upload File</label>
+									  <div class="col-md-4">
+										<input type="file" id="action_json" name="product_gallery[]" class="input-file" >
+										 <div id="action_jsondisplay"></div>
+									  </div>
+									</div>
+								</div>
+							</div>
+							<!-- Button -->
+							<div class="form-group">
+							  <div class="col-md-4">
+								<button type="button" id="add-more" name="add-more" class="btn btn-primary">Add More</button>
+							  </div>
+							</div>		  
+						</div>
+					 </div>
 					</div>
+					<!-- <div class="form-group">
+					   <label for=""><?php echo lang('pro_image_gallery');?></label>
+					   
+						<div class="input-group control-group after-add-more">
+						  <input name="product_gallery[]" type="file" id="product_gallery" />
+						  <input type="text" name="addmore[]" class="form-control" placeholder="Enter Name Here" style="margin-top:10px; width:95%">
+						  <div class="input-group-btn" style="margin-top:10px;"> 
+							<button class="btn btn-success add-more" type="button"><i class="glyphicon glyphicon-plus"></i> Add</button>
+						  </div>
+						</div>
+						 
+						<div class="copy hide">
+						  <div class="control-group input-group" style="margin-top:10px">
+							<input name="product_gallery[]" type="file" id="product_gallery" />
+							<input type="text" name="addmore[]" class="form-control" placeholder="Enter Name Here" style="margin-top:10px; width:95%">
+							<div class="input-group-btn" style="margin-top:10px"> 
+							  <button class="btn btn-danger remove" type="button"><i class="glyphicon glyphicon-remove"></i> Remove</button>
+							</div>
+						  </div>
+						</div>
+					</div> -->
+					
 					<div class="form-group">
 					  <label for=""><?php echo lang('pro_banner');?></label>
 					  <input name="product_banner" type="file" id="product_banner" multiple />
+					</div>
+					<div class="form-group">
+					  <label for=""><?php echo lang('multiple');?></label>
+					  <input name="multiple_files[]" type="file" id="multiple_files" multiple />
 					</div>
 					<div class="form-group">
 					  <label for=""><?php echo lang('pro_meta_title');?>*</label>
@@ -107,7 +163,7 @@
               <!-- /.box-body -->
               <div class="box-footer">
                 <button type="submit" class="btn btn-primary">Submit</button>
-				<a href="<?php echo base_url('cms');?>" class="btn btn-danger">Cancel</a>
+				<a href="<?php echo base_url('products');?>" class="btn btn-danger">Cancel</a>
               </div>
             </form>
           </div>
@@ -126,10 +182,47 @@
     <!-- /.content -->
 
   </div>
-  
- <link rel="stylesheet" href="<?php echo base_url();?>public/admin/css/selectize.default.css">
-  <script src="<?php echo base_url();?>public/admin/js/selectize.js"></script>
-  <script src="<?php echo base_url();?>public/admin/js/index.js"></script>
+<link rel="stylesheet" href="<?php echo base_url();?>public/admin/css/selectize.default.css">
+<script src="<?php echo base_url();?>public/admin/js/selectize.js"></script>
+<script src="<?php echo base_url();?>public/admin/js/index.js"></script>
+<script type="text/javascript">
+	$(document).ready(function () {
+		var next = 0;
+		$("#add-more").click(function(e){
+			e.preventDefault();
+			var addto = "#field" + next;
+			var addRemove = "#field" + (next);
+			next = next + 1;
+			var newIn = ' <div id="field'+ next +'" name="field'+ next +'"><div class="form-group"> <label class="col-md-4 control-label" for="action_id">Image Text</label> <div class="col-md-5"> <input id="action_id" name="gallery_text[]" type="text" placeholder="" class="form-control input-md"> </div></div> <br><br><div class="form-group"> <label class="col-md-4 control-label" for="action_json">Upload Image</label> <div class="col-md-4"> <input id="action_json" name="product_gallery[]" class="input-file" type="file"> </div></div></div>';
+			var newInput = $(newIn);
+			var removeBtn = '<button id="remove' + (next - 1) + '" class="btn btn-danger remove-me" >Remove</button></div></div><div id="field">';
+			var removeButton = $(removeBtn);
+			$(addto).after(newInput);
+			$(addRemove).after(removeButton);
+			$("#field" + next).attr('data-source',$(addto).attr('data-source'));
+			$("#count").val(next);  
+			
+				$('.remove-me').click(function(e){
+					e.preventDefault();
+					var fieldNum = this.id.charAt(this.id.length-1);
+					var fieldID = "#field" + fieldNum;
+					$(this).remove();
+					$(fieldID).remove();
+				});
+		});
+
+	});
+
+	$(document).ready(function() {
+		  $(".add-more").click(function(){ 
+			  var html = $(".copy").html();
+			  $(".after-add-more").after(html);
+		  });
+		  $("body").on("click",".remove",function(){ 
+			  $(this).parents(".control-group").remove();
+		  });
+	});
+</script>
   <script>
   var unique = $('#select-words-unique').selectize({
 					create: true,
@@ -198,6 +291,8 @@
         });
 
 	</script>
+	
+
 	
   <script type="text/javascript">
     /* Only Letter Only Script */

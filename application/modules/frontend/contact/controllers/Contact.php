@@ -27,6 +27,10 @@ class Contact extends CI_Controller {
 	
 	public function index()
 	{
+		
+		
+		$list_emails = array($this->config->item('admin_email'));
+		//pr($list_emails); die;
 		$data = array();
 		$submit = $this->input->post('btnSubmit');
 		$data['post'] ='';

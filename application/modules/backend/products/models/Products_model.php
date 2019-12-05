@@ -30,7 +30,7 @@ class Products_model extends CI_Model{
 
     }
 
-    public function insertProduct($post_value, $fileName, $images, $file)
+    public function insertProduct($post_value, $fileName, $images, $document, $file)
     {
                $product_data = array(
                 'product_tagline'        =>     $post_value['product_tagline'],
@@ -45,6 +45,7 @@ class Products_model extends CI_Model{
                 'product_specification'  =>     $post_value['product_specification'],
                 'product_image'          =>     $fileName,
                 'product_gallery'        =>     $images,
+                'multiple_files'         =>     $document,
                 'product_banner'         =>     $file,
                 'meta_title'             =>     $post_value['meta_title'],
                 'meta_keyword'           =>     $post_value['meta_keyword'],
@@ -60,7 +61,7 @@ class Products_model extends CI_Model{
 			 }
     }
 
-    public function updateProduct($post_value, $id, $fileName,$banner_data,$images)
+    public function updateProduct($post_value, $id, $fileName, $document, $banner_data,$images)
     {
          $product_data = array(
                 'product_tagline'        =>     $post_value['product_tagline'],

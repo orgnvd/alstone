@@ -47,6 +47,12 @@ class Products extends CI_Controller {
 			// $this->load->view('admin/layout', $data);
 		} else {
 			if($this->input->post()){
+				
+			/* 	pr($this->input->post());
+				echo "<pre>"; 
+				pr($_FILES);
+				
+				die; */
 				if(!empty($_FILES['product_image']['name'])){
 					$config['upload_path'] = 'images/products';
 					$config['allowed_types'] = 'jpg|jpeg|png|gif|PDF|pdf|DOC|doc';
@@ -60,11 +66,11 @@ class Products extends CI_Controller {
 				} else {
 					$image_data =  $this->input->post('old');
 				}
+				if(!empty($_FILES['product_gallery']['name'][0])){
 
-				if(isset($_FILES['product_gallery'])){
 					$images = array();
 					for($i = 0; $i < count($_FILES['product_gallery']['name']) ; $i++){
-						$target_dir = "./images/products/";
+						$target_dir = "./images/products/gallery/";
 						$target_file = $target_dir.time().$_FILES['product_gallery']['name'][$i];
 						$target_file1 = $_FILES['product_gallery']['name'][$i];
 						if(move_uploaded_file($_FILES['product_gallery']['tmp_name'][$i],$target_file)){
@@ -72,8 +78,23 @@ class Products extends CI_Controller {
 						}
 					}
 					$fileName = implode(',',$images);
-					// pr($fileName); die();
-				}
+					//pr($fileName); die();
+			    }
+
+			    if(!empty($_FILES['multiple_files']['name'][0])){
+
+					$images = array();
+					for($i = 0; $i < count($_FILES['multiple_files']['name']) ; $i++){
+						$target_dir = "./images/products/document/";
+						$target_file = $target_dir.time().$_FILES['multiple_files']['name'][$i];
+						$target_file1 = $_FILES['multiple_files']['name'][$i];
+						if(move_uploaded_file($_FILES['multiple_files']['tmp_name'][$i],$target_file)){
+						$images[] = time().$target_file1;
+						}
+					}
+					$document = implode(',',$images);
+					// pr($document); die();
+			    }
 
 				if(!empty($_FILES['product_banner']['name'])){
 					$config['upload_path'] = 'images/products';
@@ -91,7 +112,8 @@ class Products extends CI_Controller {
 
 				$post_value = $this->input->post();
 				
-				$inserted = $this->Products_model->insertProduct($post_value, $image_data, $fileName, $banner_data);
+				$inserted = $this->Products_model->insertProduct($post_value, $image_data, $fileName, $document,$banner_data);
+				// pr($inserted); die();
 				if($inserted){
 					$this->session->set_flashdata('success_message', lang('insert_message'));
 					redirect('products');
@@ -160,10 +182,30 @@ class Products extends CI_Controller {
 					}
 					$fileName = implode(',',$images);
 					//pr($fileName); die();
-			}  else {
+				} else {
 				
 					$fileName = $this->input->post('multi_image');
 				}  
+
+				if(!empty($_FILES['multiple_files']['name'][0])){
+
+					$images = array();
+					for($i = 0; $i < count($_FILES['multiple_files']['name']) ; $i++){
+						$target_dir = "./images/products/document/";
+						$target_file = $target_dir.time().$_FILES['multiple_files']['name'][$i];
+						$target_file1 = $_FILES['multiple_files']['name'][$i];
+						if(move_uploaded_file($_FILES['multiple_files']['tmp_name'][$i],$target_file)){
+						$images[] = time().$target_file1;
+						}
+					}
+					$document = implode(',',$images);
+					// pr($document); die();
+			    } else {
+				
+					$document = $this->input->post('old');
+				}  
+
+
 
 				if(!empty($_FILES['product_banner']['name'])){
 					$config['upload_path'] = 'images/products';
@@ -190,7 +232,7 @@ class Products extends CI_Controller {
 	 		$post_value = $this->input->post();
 	 
 			$updated = $this->Products_model->updateProduct($post_value, $id, $image_data ,
-				$banner_data, $fileName);
+				$document, $banner_data, $fileName);
 			// print_r($updated); 
 			if($updated){
 				$this->session->set_flashdata('success_message', lang('insert_message'));

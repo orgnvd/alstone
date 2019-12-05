@@ -127,7 +127,7 @@ class Front_model extends CI_Model{
 		$this->db->select('tbl_products.id as product_id,tbl_products.product_title, tbl_products.product_slug');
 		$this->db->where('parent_id', $category_id);
 		$this->db->where('product_status', 1);
-		$this->db->order_by('order','ASC');
+		$this->db->order_by('product_order','ASC');
 		$query = $this->db->get('tbl_products');
 		return $query->result();
 	}
